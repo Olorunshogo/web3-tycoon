@@ -1,58 +1,27 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import AppLogo from "./AppLogo";
-import { X, Menu, Home } from "lucide-react";
+import { X, Menu, Home, Globe } from "lucide-react";
 import { Button } from "./ui/button";
-import { AnimatePresence, motion, Variants } from "framer-motion";
 
-import { sideNavLinks } from "@/app/store/store";
+import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 
 export default function Header() {
-  const pathname = usePathname();
-
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
-  const sidebarRef = useRef<HTMLDivElement>(null);
-
-  // Animation variants
-  const sidebarVariants: Variants = {
-    open: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        type: "spring" as const,
-        stiffness: 300,
-        damping: 30,
-        duration: 0.3,
-      },
-    },
-    closed: {
-      x: "-100%",
-      opacity: 0,
-      transition: {
-        type: "spring" as const,
-        stiffness: 300,
-        damping: 30,
-      },
-    },
+  const handleConnectWallet = async () => {
+    alert("Connect Wallet clicked");
+    console.log("Celo selected");
   };
 
-  const overlayVariants: Variants = {
-    open: {
-      opacity: 1,
-      transition: { duration: 0.3 },
-    },
-    closed: {
-      opacity: 0,
-      transition: { duration: 0.3 },
-    },
+  const handleCeloSelect = async () => {
+    alert("Celo selected");
+    console.log("Celo selected");
   };
 
   return (
     <>
-      <header className="fixed top-0 left-0 bg-[#010F10] z-[1000] w-full border-b-1 border-[#003B3E]/50 backdrop-blur-xl">
+      <header className="fixed top-0 left-0 z-[1000] w-full border-b-1 border-[#003B3E]/50 bg-[#010F10] backdrop-blur-xl">
         <div className="mx-auto flex h-(--navbar-h) w-full max-w-7xl items-center justify-between gap-2 px-(--section-px) sm:px-(--section-px-sm) lg:px-(--section-px-lg)">
           {/* Left: Menu + Logo */}
           <div className="flex items-center gap-4">
@@ -62,131 +31,83 @@ export default function Header() {
           </div>
 
           <div className="flex items-center gap-4">
-            <Link
-              href="/"
-              className="rounded-md border-1 border-(--cyan) px-4 py-2 shadow-md backdrop-blur-md"
-            >
-              <Home className="h-5 w-5 text-(--white)" />
-            </Link>
-
-            <Button
-              variant="ghost"
-              size="icon"
-              className="w-fit cursor-pointer bg-(--cyan) px-6 py-3 text-black"
-              onClick={() => setIsSidebarOpen(true)}
-            >
-              Connect
-            </Button>
-
-            {/* Menu */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="cursor-pointer hover:bg-black sm:hidden"
-              onClick={() => setIsSidebarOpen(true)}
-            >
-              <Menu className="h-5 w-5 text-white" />
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      {/* Sidebar */}
-      <AnimatePresence>
-        {isSidebarOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              variants={overlayVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="fixed inset-0 z-40 bg-white/20 backdrop-blur-md lg:hidden"
-              onClick={() => setIsSidebarOpen(false)}
-            />
-
-            {/* Sidebar Content */}
-            <motion.aside
-              variants={sidebarVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="fixed top-0 left-0 z-50 h-full w-full transform bg-black/95 shadow-lg transition-all duration-300 ease-in-out sm:w-1/2 lg:hidden lg:w-1/3"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div
-                ref={sidebarRef}
-                className="flex h-full flex-col gap-4"
-                onClick={(e) => e.stopPropagation()}
+            {/* Home Link And Wallet Connect Button */}
+            <div className="hidden items-center gap-4 md:flex">
+              <Link
+                href="/"
+                className="rounded-md border-1 border-(--cyan) px-4 py-2 shadow-md backdrop-blur-md"
               >
-                <div className="flex h-full flex-col gap-4">
-                  {/* Header */}
-                  <div className="flex h-(--navbar-h) w-full items-center justify-between gap-4 p-3 backdrop-blur-sm">
-                    <div className="relative flex items-center gap-2">
-                      <Link
-                        href="/"
-                        onClick={() => {
-                          setIsSidebarOpen(false);
-                          console.log(isSidebarOpen);
-                        }}
-                      >
-                        <AppLogo />
-                      </Link>
-                    </div>
+                <Home className="h-5 w-5 text-(--white)" />
+              </Link>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="w-fit cursor-pointer bg-(--cyan) px-6 py-3 text-black"
+                onClick={handleConnectWallet}
+              >
+                Connect
+              </Button>
+            </div>
+
+            {/* Drawer */}
+            <Drawer>
+              <DrawerTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="cursor-pointer hover:bg-black md:hidden"
+                >
+                  <Menu className="h-5 w-5 text-white" />
+                </Button>
+              </DrawerTrigger>
+
+              <DrawerContent className="z-60 max-h-90 overflow-y-auto rounded-t-3xl border-t border-(--green-border)/50 bg-(--green-bg) p-6 backdrop-blur-2xl">
+                <div className="absolute top-8 right-6">
+                  <DrawerClose asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="cursor-pointer rounded-full p-2 text-(--white) transition-all duration-300 ease-in-out hover:bg-(--green-bg) hover:text-(--white) md:hidden"
+                    >
+                      <X className="h-6 w-6" />
+                    </Button>
+                  </DrawerClose>
+                </div>
+                <Link
+                  href="/"
+                  className="flex w-fit items-center gap-4 pt-8 text-lg font-bold text-(--white) lg:text-xl"
+                >
+                  <Home className="h-6 w-6" />
+                  Home
+                </Link>
+                <div className="mx-auto w-full max-w-md">
+                  <div className="font-orbitran flex w-full flex-col items-center justify-center gap-6 p-6">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-20 w-full rounded-md border-1 border-(--green-border)/50 bg-transparent px-6 py-3 text-xl text-(--cyan) shadow-md backdrop-blur-xl transition-all duration-300 ease-in-out hover:border-(--green-border)/70 hover:bg-transparent hover:text-(--cyan)"
+                      onClick={handleCeloSelect}
+                    >
+                      <Globe className="h-12 w-12" />
+                      Celo
+                    </Button>
 
                     <Button
                       variant="ghost"
-                      className="flex w-fit items-center justify-center transition-all duration-300 ease-in-out hover:cursor-pointer hover:text-(--input-error-red)"
-                      onClick={() => {
-                        setIsSidebarOpen(false);
-                        console.log(isSidebarOpen);
-                      }}
+                      size="icon"
+                      className="h-20 w-full rounded-md border-1 border-(--cyan) bg-(--cyan)/20 px-6 py-3 text-xl text-(--cyan) shadow-md backdrop-blur-xl transition-all duration-300 ease-in-out hover:bg-(--cyan)/30 hover:text-(--cyan)"
+                      onClick={handleConnectWallet}
                     >
-                      <X className="h-6 w-6 text-white hover:text-red-700" />
+                      Connect Wallet
                     </Button>
                   </div>
-
-                  {/* Navigation Links */}
-                  <nav className="w-full p-4">
-                    <ul className="grid w-full grid-cols-1 gap-6">
-                      {sideNavLinks.map(({ label, href, icon: Icon }) => {
-                        const isActive = pathname === href;
-                        return (
-                          <li key={href}>
-                            <Link
-                              href={href}
-                              className={`${
-                                isActive
-                                  ? "group bg-[#E8EEE9] text-(--heading-colour)"
-                                  : "text-(--text-colour) hover:bg-[#E8EEE9]"
-                              } flex items-center gap-4 border-b border-(--border-gray) p-4 text-xl`}
-                              onClick={() => setIsSidebarOpen(false)}
-                            >
-                              {Icon && (
-                                <Icon
-                                  className={`h-5 w-5 text-(--debridger-green-dark) transition-all duration-300 ease-in-out ${isActive ? "fill-current" : "group-hover:fill-current"}`}
-                                />
-                              )}
-                              <span>{label}</span>
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </nav>
-
-                  {/* Authentication Links */}
-                  {/* <div className="flex flex-wrap items-center gap-4 p-4">
-                    <SecondaryLink href="/signin" label="Login" className="" />
-
-                    <PrimaryLink href="/signup" label="Sign Up" />
-                  </div> */}
                 </div>
-              </div>
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
+              </DrawerContent>
+            </Drawer>
+          </div>
+        </div>
+      </header>
     </>
   );
 }

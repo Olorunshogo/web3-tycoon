@@ -125,15 +125,6 @@ export default function Home() {
           transition={{ duration: 1.4, ease: "easeOut" }}
           className="mx-auto h-full w-full max-w-xl rounded-md px-(--section-px) py-(--section-py) sm:px-(--section-px-sm) sm:py-(--section-py-sm) md:max-w-xl lg:max-w-2xl lg:px-(--section-px-lg) lg:py-(--section-py-lg)"
         >
-          {/* 
-              3. Form background color
-              The form container has:
-              
-              rounded-xl p-8 → but no explicit background color in the code → likely semi-transparent dark / almost black.
-              Most common in this aesthetic: bg-black/60, bg-gray-900/70, or bg-black/50 + backdrop-blur-md.
-              
-              Recommendation (add to the <form> or its wrapper <div className="mx-auto h-full w-full max-w-xl rounded-md">):
-             */}
           <form
             onSubmit={handleSubmitWaitlist}
             className="relative flex max-w-lg flex-col gap-6 overflow-hidden rounded-3xl border border-cyan-500/30 bg-gray-900/80 p-8 backdrop-blur-xl"
@@ -158,19 +149,7 @@ export default function Home() {
                 JOIN TYCOON WAITLIST
               </h1>
             </div>
-            {/* 
-                bg-black/65 backdrop-blur-md border border-cyan-900/30
-                or slightly more opaque:
-                tsxbg-gray-950/80 backdrop-blur-sm
-                4. Input field background colors
-                Typical for this style (cyber/neon dark theme):
-                
-                Default: bg-black/40 or bg-gray-900/50 or bg-slate-900/60
-                With subtle border: border border-cyan-500/30 or border-gray-700
-                Focus: border-cyan-400/70, ring-1 ring-cyan-500/50, stronger shadow-cyan-500/30
-                
-                You can define in your TextInput / EmailInput components something like:
-               */}
+
             {/* Email Address */}
             <div className="flex flex-col gap-2">
               <EmailInput

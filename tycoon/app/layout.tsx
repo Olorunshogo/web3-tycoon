@@ -57,10 +57,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} w-full bg-linear-to-br from-gray-900 via-blue-950 to-cyan-900 antialiased`}
       >
-        {/* 
-          bg-gradient-to-bl from-black via-indigo-950/40 to-cyan-950/60
-          Dramatic: bg-gradient-to-bl from-black via-indigo-950/40 to-cyan-950/60
-         */}
         <Header />
         <ScrollProgress />
         <main className="">{children}</main>

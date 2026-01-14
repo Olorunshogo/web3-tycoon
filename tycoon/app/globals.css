@@ -1,4 +1,9 @@
+/* Font Manrope */
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+
+/* Font Orbitran */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -135,6 +140,11 @@
     font-optical-sizing: auto;
   }
 
+  .font-orbitran {
+    font-family: "Orbitron", sans-serif;
+    font-optical-sizing: auto;
+  }
+
 }
 
 :root {
@@ -151,6 +161,9 @@
   --section-py: 2rem;
   --section-py-sm: 3rem;
   --section-py-lg: 4rem;
+
+  --green-bg: #010F10;
+  --green-border: #003B3E;
 }
 
 /* in globals.css or component */
