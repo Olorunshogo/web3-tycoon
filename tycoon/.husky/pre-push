@@ -1,0 +1,44 @@
+
+#!/bin/sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+protected_branch="main"
+allowed_email="shownzy001@gmail.com"
+current_email=$(git config user.email)
+
+# Read from stdin (standard input for pre-push hook)
+while read local_ref local_sha remote_ref remote_sha; do
+  # Extract remote branch name (e.g., refs/heads/main)
+  remote_branch=$(echo "$remote_ref" | sed -e 's|^refs/heads/||')
+
+  if [ "$remote_branch" != "$protected_branch" ]; then
+    continue  # Skip non-main branches
+  fi
+
+  # Deleting the branch
+  if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
+    if [ "$current_email" != "$allowed_email" ]; then
+      echo "❌ You ($current_email) are not allowed to delete the $protected_branch branch."
+      exit 1
+    fi
+    continue
+  fi
+
+  # Creating new branch (local_sha would be zero if new, but remote_sha non-zero? Wait, standard check)
+  if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
+    # Deleting (already handled above)
+    continue
+  fi
+
+  # Check if this push is a force push (non-fast-forward)
+  if ! git merge-base --is-ancestor "$remote_sha" "$local_sha" 2>/dev/null; then
+    if [ "$current_email" != "$allowed_email" ]; then
+      echo "❌ Force-pushing to $protected_branch is restricted."
+      echo "   Only $allowed_email is allowed."
+      echo "   Current user: $current_email"
+      exit 1
+    fi
+  fi
+done
+
+exit 0
